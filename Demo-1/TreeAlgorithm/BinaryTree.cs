@@ -4,12 +4,12 @@ namespace TreeAlgorithm
 {
     public class BinaryTree
     {
-        private int value;
+        private string value;
         private BinaryTree root;
         private BinaryTree left;
         private BinaryTree right;
 
-        public int Value
+        public string Value
         {
             get { return value; }
             set { this.value = value; }
@@ -34,7 +34,7 @@ namespace TreeAlgorithm
         }
 
         // Contructor that constructs the Tree, getting the value of each node of the BinaryTree.
-        public BinaryTree(int value)
+        public BinaryTree(string value)
         {
             this.value = value;
         }
@@ -62,7 +62,7 @@ namespace TreeAlgorithm
             try
             {
                 Console.Write("Enter a node from the tree to find the LCA: ");
-                node = new BinaryTree(int.Parse(Console.ReadLine()));
+                node = new BinaryTree(Console.ReadLine());
                 return node;
             }
             catch (FormatException)
@@ -158,7 +158,7 @@ namespace TreeAlgorithm
             }
 
             BinaryTree ancestor = findLowestCommonAncestor(root, firstNode, secondNode);
-            Console.WriteLine("The Lowest Common Ancestor of {0} and {1} is {2}.", firstNode.Value, secondNode.Value, ancestor.Value);
+            Console.WriteLine("The Lowest Common Ancestor of the {0} and the {1} is the {2}.", firstNode.Value, secondNode.Value, ancestor.Value);
         }
     }
 }

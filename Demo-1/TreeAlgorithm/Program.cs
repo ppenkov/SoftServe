@@ -6,17 +6,17 @@ namespace TreeAlgorithm
     {
         static void Main(string[] args)
         {
-            BinaryTree tree = new BinaryTree(33);
-            tree.Left = new BinaryTree(15);
-            tree.Right = new BinaryTree(12);
-            tree.Left.Left = new BinaryTree(20);
-            tree.Left.Right = new BinaryTree(3);
-            tree.Right.Left = new BinaryTree(14);
-            tree.Right.Right = new BinaryTree(7);
-            tree.Left.Left.Left = new BinaryTree(9);
-            tree.Left.Left.Right = new BinaryTree(8);
-            tree.Right.Right.Left = new BinaryTree(10);
-            tree.Right.Right.Right = new BinaryTree(11);
+            BinaryTree tree = new BinaryTree("President");
+            tree.Left = new BinaryTree("First Vice President");
+            tree.Right = new BinaryTree("Second Vice President");
+            tree.Left.Left = new BinaryTree("Executive Director");
+            tree.Left.Right = new BinaryTree("Director");
+            tree.Right.Left = new BinaryTree("Manager");
+            tree.Right.Right = new BinaryTree("Supervisor");
+            tree.Left.Left.Left = new BinaryTree("Specialist");
+            tree.Left.Left.Right = new BinaryTree("Senior Specialist");
+            tree.Right.Right.Left = new BinaryTree("Expert");
+            tree.Right.Right.Right = new BinaryTree("Senior Expert");
 
             Console.WriteLine("BinaryTree structure:");
             Console.WriteLine();
