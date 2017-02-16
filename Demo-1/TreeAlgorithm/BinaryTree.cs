@@ -53,8 +53,7 @@ namespace TreeAlgorithm
             PrintTree(root.right, indent + 1);
         }
 
-        // Method where the user inputs the nodes that will be search.
-        // This method catches a format exceptions.
+        // Method where the user inputs the nodes that will be searched.
         public BinaryTree InputNode()
         {
                 BinaryTree node;
