@@ -57,20 +57,10 @@ namespace TreeAlgorithm
         // This method catches a format exceptions.
         public BinaryTree InputNode()
         {
-            BinaryTree node;
-
-            try
-            {
+                BinaryTree node;
                 Console.Write("Enter a node from the tree to find the LCA: ");
                 node = new BinaryTree(Console.ReadLine());
                 return node;
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("The tree is not from string type! Please, enter an integer!");
-                Console.WriteLine();
-                return InputNode();
-            }
         }
 
         // Method that finds the current node we search in the BinaryTree.
