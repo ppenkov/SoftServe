@@ -14,14 +14,14 @@ namespace HRManagement.Controllers
     {
         private EmployeeDB db = new EmployeeDB();
 
-        // GET: Projects
+        // Displays the Projects
         public ActionResult Index()
         {
             var projects = db.Projects.Include(p => p.ProjectManager);
             return View(projects.ToList());
         }
 
-        // GET: Projects/Details/5
+        // Displays the details of the current Project
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,16 +36,14 @@ namespace HRManagement.Controllers
             return View(project);
         }
 
-        // GET: Projects/Create
+        // Creates new Project
         public ActionResult Create()
         {
             ViewBag.ManagerID = new SelectList(db.ProjectManagers, "ID", "Name");
             return View();
         }
 
-        // POST: Projects/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the information for the new Project
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,ProjectName,ManagerID")] Project project)
@@ -61,7 +59,7 @@ namespace HRManagement.Controllers
             return View(project);
         }
 
-        // GET: Projects/Edit/5
+        // Edits the details of the Project
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -77,9 +75,7 @@ namespace HRManagement.Controllers
             return View(project);
         }
 
-        // POST: Projects/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the changes which are made 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,ProjectName,ManagerID")] Project project)
@@ -94,32 +90,7 @@ namespace HRManagement.Controllers
             return View(project);
         }
 
-        // GET: Projects/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Project project = db.Projects.Find(id);
-            if (project == null)
-            {
-                return HttpNotFound();
-            }
-            return View(project);
-        }
-
-        // POST: Projects/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+        // Releases all resources that are used by the current instance of the class
         protected override void Dispose(bool disposing)
         {
             if (disposing)

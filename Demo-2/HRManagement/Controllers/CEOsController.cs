@@ -14,13 +14,13 @@ namespace HRManagement.Controllers
     {
         private EmployeeDB db = new EmployeeDB();
 
-        // GET: CEOs
+        // Displays the CEO
         public ActionResult Index()
         {
             return View(db.CEOs.ToList());
         }
 
-        // GET: CEOs/Details/5
+        // Displays the details of the CEO
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -35,7 +35,7 @@ namespace HRManagement.Controllers
             return View(cEO);
         }
 
-        // GET: CEOs/Edit/5
+        // Edits the details of the CEO
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -50,9 +50,7 @@ namespace HRManagement.Controllers
             return View(cEO);
         }
 
-        // POST: CEOs/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the changes which are made 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name,Position,Salary,City,Email,Phone")] CEO cEO)
@@ -66,6 +64,7 @@ namespace HRManagement.Controllers
             return View(cEO);
         }
 
+        // Releases all resources that are used by the current instance of the class
         protected override void Dispose(bool disposing)
         {
             if (disposing)

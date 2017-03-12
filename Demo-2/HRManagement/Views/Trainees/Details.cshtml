@@ -97,7 +97,9 @@
         </dd>
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+<button>
     @Html.ActionLink("Back to List", "Index")
-</p>
+    </button>
+<button>
+    @Html.ActionLink("Team", "Team", new { id = Model.ID }) 
+</button>

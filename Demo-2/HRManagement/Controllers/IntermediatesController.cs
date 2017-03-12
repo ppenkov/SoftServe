@@ -14,14 +14,14 @@ namespace HRManagement.Controllers
     {
         private EmployeeDB db = new EmployeeDB();
 
-        // GET: Intermediates
+        // Displays the Intermediates
         public ActionResult Index()
         {
             var intermediates = db.Intermediates.Include(i => i.Project).Include(i => i.TeamLeader);
             return View(intermediates.ToList());
         }
 
-        // GET: Intermediates/Details/5
+        // Displays the details of the current Intermediates
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,7 +36,60 @@ namespace HRManagement.Controllers
             return View(intermediate);
         }
 
-        // GET: Intermediates/Create
+        // Displays all the members of the team, the current Intermediate is part of
+        public ActionResult Team(int? id, Intermediate intermediate)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            intermediate = db.Intermediates.Find(id);
+
+            if (intermediate == null)
+            {
+                return HttpNotFound();
+            }
+
+            var query1 = (from row in db.TeamLeaders
+                          where row.Project.ProjectName == intermediate.Project.ProjectName
+                          select new { row.Name, row.Position, row.Project, row.Project.ProjectManager });
+
+            var query2 = (from row in db.Seniors
+                          where row.Project.ProjectName == intermediate.Project.ProjectName
+                          select new { row.Name, row.Position, row.Project, row.Project.ProjectManager });
+
+            var query3 = (from row in db.Intermediates
+                          where row.Project.ProjectName == intermediate.Project.ProjectName
+                          select new { row.Name, row.Position, row.Project, row.Project.ProjectManager });
+
+            var query4 = (from row in db.Juniors
+                          where row.Project.ProjectName == intermediate.Project.ProjectName
+                          select new { row.Name, row.Position, row.Project, row.Project.ProjectManager });
+
+            var query5 = (from row in db.Trainees
+                          where row.Project.ProjectName == intermediate.Project.ProjectName
+                          select new { row.Name, row.Position, row.Project, row.Project.ProjectManager });
+
+            var query = query1.Concat(query2).Concat(query3).Concat(query4).Concat(query5);
+
+            var team = new List<Intermediate>();
+
+            foreach (var item in query)
+            {
+                team.Add(new Intermediate()
+                {
+                    Name = item.Name,
+                    Position = item.Position,
+                    Project = item.Project
+                });
+            }
+
+            return View(team);
+        }
+
+
+        // Creates new Intermediate
         public ActionResult Create()
         {
             Intermediate positionName = new Intermediate()
@@ -49,9 +102,7 @@ namespace HRManagement.Controllers
             return View(positionName);
         }
 
-        // POST: Intermediates/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the information for the new Intermediate
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name,Position,Salary,City,Email,Phone,ProjectID,ManagerID")] Intermediate intermediate)
@@ -68,7 +119,7 @@ namespace HRManagement.Controllers
             return View(intermediate);
         }
 
-        // GET: Intermediates/Edit/5
+        // Edits the details of the Intermediate
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -85,9 +136,7 @@ namespace HRManagement.Controllers
             return View(intermediate);
         }
 
-        // POST: Intermediates/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the changes which are made 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name,Position,Salary,City,Email,Phone,ProjectID,ManagerID")] Intermediate intermediate)
@@ -103,7 +152,7 @@ namespace HRManagement.Controllers
             return View(intermediate);
         }
 
-        // GET: Intermediates/Delete/5
+        // Deletes the information of current Intermediate
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -118,7 +167,7 @@ namespace HRManagement.Controllers
             return View(intermediate);
         }
 
-        // POST: Intermediates/Delete/5
+        // Performs the delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -129,6 +178,7 @@ namespace HRManagement.Controllers
             return RedirectToAction("Index");
         }
 
+        // Releases all resources that are used by the current instance of the class
         protected override void Dispose(bool disposing)
         {
             if (disposing)

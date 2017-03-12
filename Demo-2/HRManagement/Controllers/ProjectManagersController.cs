@@ -14,14 +14,14 @@ namespace HRManagement.Controllers
     {
         private EmployeeDB db = new EmployeeDB();
 
-        // GET: ProjectManagers
+        // Displays the Project Managers
         public ActionResult Index()
         {
             var projectManagers = db.ProjectManagers.Include(p => p.DeliveryDirector);
             return View(projectManagers.ToList());
         }
 
-        // GET: ProjectManagers/Details/5
+        // Displays the details of the current Project Manager
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,7 +36,7 @@ namespace HRManagement.Controllers
             return View(projectManager);
         }
 
-        // GET: ProjectManagers/Create
+        // Creates new ProjectManager
         public ActionResult Create()
         {
             ProjectManager positionName = new ProjectManager()
@@ -48,9 +48,7 @@ namespace HRManagement.Controllers
             return View(positionName);
         }
 
-        // POST: ProjectManagers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the information for the new Project Manager
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name,Position,Salary,City,Email,Phone,ManagerID")] ProjectManager projectManager)
@@ -66,7 +64,7 @@ namespace HRManagement.Controllers
             return View(projectManager);
         }
 
-        // GET: ProjectManagers/Edit/5
+        // Edits the details of the Project Manager
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,9 +80,7 @@ namespace HRManagement.Controllers
             return View(projectManager);
         }
 
-        // POST: ProjectManagers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the changes which are made 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name,Position,Salary,City,Email,Phone,ManagerID")] ProjectManager projectManager)
@@ -99,6 +95,7 @@ namespace HRManagement.Controllers
             return View(projectManager);
         }
 
+        // Releases all resources that are used by the current instance of the class
         protected override void Dispose(bool disposing)
         {
             if (disposing)

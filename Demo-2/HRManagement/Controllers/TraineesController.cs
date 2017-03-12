@@ -14,14 +14,14 @@ namespace HRManagement.Controllers
     {
         private EmployeeDB db = new EmployeeDB();
 
-        // GET: Trainees
+        // Displays the Trainees
         public ActionResult Index()
         {
             var trainees = db.Trainees.Include(t => t.Project).Include(t => t.TeamLeader);
             return View(trainees.ToList());
         }
 
-        // GET: Trainees/Details/5
+        // Displays the details of the current Trainee
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,7 +36,59 @@ namespace HRManagement.Controllers
             return View(trainee);
         }
 
-        // GET: Trainees/Create
+        // Displays all the members of the team, the current Trainee is part of
+        public ActionResult Team(int? id, Trainee trainee)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            trainee = db.Trainees.Find(id);
+
+            if (trainee == null)
+            {
+                return HttpNotFound();
+            }
+
+            var query1 = (from row in db.TeamLeaders
+                          where row.Project.ProjectName == trainee.Project.ProjectName
+                          select new { row.Name, row.Position, row.Project, row.Project.ProjectManager });
+
+            var query2 = (from row in db.Seniors
+                          where row.Project.ProjectName == trainee.Project.ProjectName
+                          select new { row.Name, row.Position, row.Project, row.Project.ProjectManager });
+
+            var query3 = (from row in db.Intermediates
+                          where row.Project.ProjectName == trainee.Project.ProjectName
+                          select new { row.Name, row.Position, row.Project, row.Project.ProjectManager });
+
+            var query4 = (from row in db.Juniors
+                          where row.Project.ProjectName == trainee.Project.ProjectName
+                          select new { row.Name, row.Position, row.Project, row.Project.ProjectManager });
+
+            var query5 = (from row in db.Trainees
+                          where row.Project.ProjectName == trainee.Project.ProjectName
+                          select new { row.Name, row.Position, row.Project, row.Project.ProjectManager });
+
+            var query = query1.Concat(query2).Concat(query3).Concat(query4).Concat(query5);
+
+            var team = new List<Trainee>();
+
+            foreach (var item in query)
+            {
+                team.Add(new Trainee()
+                {
+                    Name = item.Name,
+                    Position = item.Position,
+                    Project = item.Project
+                });
+            }
+
+            return View(team);
+        }
+
+        // Creates new Trainee
         public ActionResult Create()
         {
             Trainee positionName = new Trainee()
@@ -49,9 +101,7 @@ namespace HRManagement.Controllers
             return View(positionName);
         }
 
-        // POST: Trainees/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the information for the new Trainee
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name,Position,Salary,City,Email,Phone,ProjectID,ManagerID")] Trainee trainee)
@@ -68,7 +118,7 @@ namespace HRManagement.Controllers
             return View(trainee);
         }
 
-        // GET: Trainees/Edit/5
+        // Edits the details of the Trainee
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -85,9 +135,7 @@ namespace HRManagement.Controllers
             return View(trainee);
         }
 
-        // POST: Trainees/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the changes which are made 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name,Position,Salary,City,Email,Phone,ProjectID,ManagerID")] Trainee trainee)
@@ -103,7 +151,7 @@ namespace HRManagement.Controllers
             return View(trainee);
         }
 
-        // GET: Trainees/Delete/5
+        // Deletes the information of current Trainee
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -118,7 +166,7 @@ namespace HRManagement.Controllers
             return View(trainee);
         }
 
-        // POST: Trainees/Delete/5
+        // Performs the delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -129,6 +177,7 @@ namespace HRManagement.Controllers
             return RedirectToAction("Index");
         }
 
+        // Releases all resources that are used by the current instance of the class
         protected override void Dispose(bool disposing)
         {
             if (disposing)

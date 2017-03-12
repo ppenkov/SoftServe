@@ -8,14 +8,22 @@ namespace HRManagement.Controllers
 {
     public class HomeController : Controller
     {
+        // Displays the Index page
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult About()
+        // Displays the Manager page
+        public ActionResult Management()
         {
-            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
+        // Displays the Developer page
+        public ActionResult Developers()
+        {
 
             return View();
         }

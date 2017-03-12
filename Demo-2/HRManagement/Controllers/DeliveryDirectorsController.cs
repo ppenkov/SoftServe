@@ -14,14 +14,14 @@ namespace HRManagement.Controllers
     {
         private EmployeeDB db = new EmployeeDB();
 
-        // GET: DeliveryDirectors
+        // Displays the Delivery Directors
         public ActionResult Index()
         {
             var deliveryDirectors = db.DeliveryDirectors.Include(d => d.CEO);
             return View(deliveryDirectors.ToList());
         }
 
-        // GET: DeliveryDirectors/Details/5
+        // Displays the details of the current Delivery Directors
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,7 +36,7 @@ namespace HRManagement.Controllers
             return View(deliveryDirector);
         }
 
-        // GET: DeliveryDirectors/Create
+        // Creates new Delivery Director
         public ActionResult Create()
         {
             DeliveryDirector positionName = new DeliveryDirector()
@@ -48,9 +48,7 @@ namespace HRManagement.Controllers
             return View(positionName);
         }
 
-        // POST: DeliveryDirectors/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the information for the new Delivery Director
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name,Position,Salary,City,Email,Phone,ManagerID")] DeliveryDirector deliveryDirector)
@@ -66,7 +64,7 @@ namespace HRManagement.Controllers
             return View(deliveryDirector);
         }
 
-        // GET: DeliveryDirectors/Edit/5
+        // Edits the details of the Delivery Director
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,9 +80,7 @@ namespace HRManagement.Controllers
             return View(deliveryDirector);
         }
 
-        // POST: DeliveryDirectors/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Posts the changes which are made 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name,Position,Salary,City,Email,Phone,ManagerID")] DeliveryDirector deliveryDirector)
@@ -99,6 +95,7 @@ namespace HRManagement.Controllers
             return View(deliveryDirector);
         }
 
+        // Releases all resources that are used by the current instance of the class
         protected override void Dispose(bool disposing)
         {
             if (disposing)

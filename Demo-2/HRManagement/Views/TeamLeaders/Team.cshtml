@@ -1,16 +1,7 @@
-﻿@model List<HRManagement.Models.Senior>
+﻿@model List<HRManagement.Models.TeamLeader>
 
 @{
     ViewBag.Title = "Team";
-}
-
-@foreach (var item in Model)
-{
-    if (item.Project.ProjectName == "No project assigned")
-    {
-        ViewBag.Title = "Employees without a project are not part of a Team";
-        break;
-    }
 }
 
 <h3>@ViewBag.Title</h3>
